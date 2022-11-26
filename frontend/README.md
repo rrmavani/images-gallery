@@ -68,3 +68,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+## eslint and prettier configuration
+1. Install eslint and prettier plugin for VSCODE
+2. Install some plugin in npm `npm install -D prettier eslint eslint-config-prettier eslint-plugin-prettier
+3. In package.json edit section for 'eslintConfig' (add "plugin:prettier/recommended" in extends )
+4. Create .vscode folder and create settings.json.
+5. In settings.json add configuration related to "editor.tabSize", "eslint.validate", "editor.codeActionsOnSave"
+6. Add script of 'lint' and 'lint-fix' in package.json
