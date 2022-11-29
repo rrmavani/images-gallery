@@ -13,17 +13,6 @@ function App() {
   const [word, setWord] = useState("");
   const [images, setImages] = useState([]);
 
-  // const getSavedImages = async () => {
-  //   try {
-  //     const res = await axios.get(`${API_URL}/images`);
-  //     setImages(res.data || []);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => getSavedImages(), []);
-
   useEffect(() => {
     async function getSavedImages() {
       try {
@@ -51,6 +40,25 @@ function App() {
   const handleDeleteImage = (id) => {
     setImages(images.filter((image) => image.id !== id));
   };
+
+  const handleSaveImage = async (id) => {
+    const imageToBeSaved = images.find((image) => image.id === id);
+    imageToBeSaved.saved = true;
+
+    try {
+      const res = await axios.post(`${API_URL}/images`, imageToBeSaved);
+      if (res.data?.inserted_id) {
+        setImages(
+          images.map((image) =>
+            image.id === id ? { ...image, saved: true } : image
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="App">
       <Header title="Images Gallery" />
@@ -61,7 +69,11 @@ function App() {
             {images.map((image, i) => {
               return (
                 <Col key={i}>
-                  <ImageCard image={image} deleteImage={handleDeleteImage} />
+                  <ImageCard
+                    image={image}
+                    deleteImage={handleDeleteImage}
+                    saveImage={handleSaveImage}
+                  />
                 </Col>
               );
             })}
