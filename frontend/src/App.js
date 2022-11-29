@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
 import Search from "./components/Search";
 import ImageCard from "./components/ImageCard";
@@ -21,8 +23,10 @@ function App() {
         const res = await axios.get(`${API_URL}/images`);
         setImages(res.data || []);
         setLoading(false);
+        toast.success("Saved Images Downloaded");
       } catch (error) {
         console.log(error);
+        toast.error(error.message);
       }
     }
     getSavedImages();
@@ -34,8 +38,10 @@ function App() {
     try {
       const res = await axios.get(`${API_URL}/new-image?query=${word}`);
       setImages([{ ...res.data, title: word }, ...images]);
+      toast.info(`New Image ${word.toUpperCase()} Found`);
     } catch (error) {
       console.log(error);
+      toast.error(error.message);
     }
 
     setWord("");
@@ -46,6 +52,11 @@ function App() {
       if (imageToBeDeleted.saved) {
         const res = await axios.delete(`${API_URL}/images/${id}`);
         if (res.data?.deleted_id) {
+          toast.warn(
+            `Image ${images
+              .find((image) => image.id === id)
+              .title.toUpperCase()} was deleted`
+          );
           setImages(images.filter((image) => image.id !== id));
         }
       } else {
@@ -53,6 +64,7 @@ function App() {
       }
     } catch (error) {
       console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -68,9 +80,11 @@ function App() {
             image.id === id ? { ...image, saved: true } : image
           )
         );
+        toast.info(`Image ${imageToBeSaved.title.toUpperCase()} was saved`);
       }
     } catch (error) {
       console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -107,6 +121,7 @@ function App() {
           </Container>
         </>
       )}
+      <ToastContainer position="bottom-right" />
     </div>
   );
 }
