@@ -10,7 +10,8 @@ import Spinner from "./components/Spinner";
 import { Container, Row, Col } from "react-bootstrap";
 import Welcome from "./components/Welcome";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:5050";
+//const API_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:5050";
+const API_URL = "http://images-gallery-api-services:5050";
 
 function App() {
   const [loading, setLoading] = useState(true);
